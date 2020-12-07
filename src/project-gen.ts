@@ -6,7 +6,6 @@ import { exec } from "child_process";
 import { promisify } from "util";
 import { Listr, ListrRenderer, ListrTaskWrapper } from "listr2";
 import { Config, configSchema } from "./config";
-import Joi from "joi";
 const git = simpleGit();
 
 const execAsync = promisify(exec);
@@ -69,7 +68,7 @@ export const getConfig = async (
 ): Promise<void> => {
     if (!(await fs.pathExists(configFile))) await promptConfig(ctx, task);
 
-    ctx.config = JSON.parse(
+    ctx.config = yaml.parse(
         await fs.readFile(configFile, { encoding: "utf-8" })
     );
 
